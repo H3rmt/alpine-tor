@@ -3,7 +3,7 @@ Bridge compose.yml
 version: "3.4"
 services:
   obfs4-bridge:
-    image: ghcr.io/h3rmt/alpine-tor:master
+    image: h3rmt/alpine-tor:master
     restart: unless-stopped
     container_name: bridge
     user: "0:0"
@@ -24,7 +24,7 @@ Middle compose.yml
 version: "3.4"
 services:
   obfs4-bridge:
-    image: ghcr.io/h3rmt/alpine-tor:master
+    image: h3rmt/alpine-tor:master
     restart: unless-stopped
     container_name: middle
     user: "0:0"
@@ -44,7 +44,7 @@ Exit compose.yml
 version: "3.4"
 services:
   obfs4-bridge:
-    image: ghcr.io/h3rmt/alpine-tor:master
+    image: h3rmt/alpine-tor:master
     restart: unless-stopped
     container_name: exit
     user: "0:0"

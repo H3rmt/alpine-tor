@@ -3,9 +3,6 @@ on:
   release:
     types: [prereleased, released]
 env:
-  # Use docker.io for Docker Hub if empty
-  REGISTRY: ghcr.io
-  # github.repository as <account>/<repo>
   IMAGE_NAME: h3rmt/alpine-tor
 
 jobs:
@@ -31,7 +28,9 @@ jobs:
         id: meta
         uses: docker/metadata-action@v5
         with:
-          images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
+          images:  |
+            ${{ vars.IMAGE_NAME }}
+            ghcr.io/${{ vars.IMAGE_NAME }}
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v3
       - name: Set up Docker Buildx
@@ -83,8 +82,9 @@ jobs:
       - name: Docker meta
         id: meta
         uses: docker/metadata-action@v5
-        with:
-          images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
+        with: |
+            ${{ vars.IMAGE_NAME }}
+            ghcr.io/${{ vars.IMAGE_NAME }}
       - name: Login to GitHub Container Registry
         uses: docker/login-action@v3
         with:
