@@ -42,6 +42,8 @@
 #Log notice syslog
 ## To send all messages to stderr:
 #Log debug stderr
+Log notice file /var/log/tor/log
+Log notice stdout
 
 ## Uncomment this to start the process in the background... or use
 ## --runasdaemon 1 on the command line. This is ignored on Windows;
