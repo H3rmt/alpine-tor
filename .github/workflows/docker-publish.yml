@@ -28,7 +28,7 @@ jobs:
         id: meta
         uses: docker/metadata-action@v5
         with:
-          images:  |
+          images: |
             ${{ vars.IMAGE_NAME }}
             ghcr.io/${{ vars.IMAGE_NAME }}
       - name: Set up QEMU
@@ -88,7 +88,7 @@ jobs:
       - name: Login to GitHub Container Registry
         uses: docker/login-action@v3
         with:
-          registry: ${{ env.REGISTRY }}
+          registry: ghcr.io
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
       - name: Create manifest list and push
