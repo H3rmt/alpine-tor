@@ -2,7 +2,7 @@ Bridge compose.yml
 ```yaml
 version: "3.4"
 services:
-  obfs4-bridge:
+  bridge:
     image: h3rmt/alpine-tor:master
     restart: unless-stopped
     container_name: bridge
@@ -23,7 +23,7 @@ Middle compose.yml
 ```yaml
 version: "3.4"
 services:
-  obfs4-bridge:
+  middle:
     image: h3rmt/alpine-tor:master
     restart: unless-stopped
     container_name: middle
@@ -43,7 +43,7 @@ Exit compose.yml
 ```yaml
 version: "3.4"
 services:
-  obfs4-bridge:
+  exit:
     image: h3rmt/alpine-tor:master
     restart: unless-stopped
     container_name: exit
