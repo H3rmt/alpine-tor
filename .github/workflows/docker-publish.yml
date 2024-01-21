@@ -82,7 +82,8 @@ jobs:
       - name: Docker meta
         id: meta
         uses: docker/metadata-action@v5
-        with: |
+        with:
+          images: |
             ${{ vars.IMAGE_NAME }}
             ghcr.io/${{ vars.IMAGE_NAME }}
       - name: Login to GitHub Container Registry
