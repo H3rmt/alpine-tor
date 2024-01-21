@@ -53,7 +53,7 @@ jobs:
           context: .
           platforms: ${{ matrix.platform }}
           labels: ${{ steps.meta.outputs.labels }}
-          outputs: type=image,name-canonical=true,push=true,push-by-digest=true,name=${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
+          outputs: type=image,name-canonical=true,push=true,push-by-digest=true,name=${{ env.IMAGE_NAME }}
       - name: Export digest
         run: |
           mkdir -p /tmp/digests
