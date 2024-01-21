@@ -4,7 +4,8 @@ on:
     types: [prereleased, released]
 env:
   IMAGE_NAME: h3rmt/alpine-tor
-
+  REGISTRY: ghcr.io
+  
 jobs:
   build:
     runs-on: ubuntu-latest
