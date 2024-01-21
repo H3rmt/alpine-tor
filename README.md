@@ -15,7 +15,7 @@ services:
       - AccountingStart="week 1 01:00"
       - AccountingMax="2 TBytes"
     volumes:
-      - /data:/var/lib/tor
+      - ./data:/var/lib/tor
     network_mode: host
 ```
 
@@ -35,7 +35,7 @@ services:
       - AccountingStart="week 1 01:00"
       - AccountingMax="2 TBytes"
     volumes:
-      - /data:/var/lib/tor
+      - ./data:/var/lib/tor
     network_mode: host
 ```
 
@@ -56,6 +56,6 @@ services:
       - AccountingStart="week 1 01:00"
       - AccountingMax="2 TBytes"
     volumes:
-      - /data:/var/lib/tor
+      - ./data:/var/lib/tor
     network_mode: host
 ```

@@ -1,5 +1,5 @@
  #!/bin/sh
-echo "Running jfwenisch/alpine-tor"
+echo "Running h3rmt/alpine-tor"
 echo -e "Alpine Version: \c" && cat /etc/alpine-release
 echo -e "Tor Version: \c" && tor --version
 echo -e "OBFS4Proxy Version: \c" && obfs4proxy -version
