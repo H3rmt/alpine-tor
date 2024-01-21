@@ -3,10 +3,8 @@ FROM golang:alpine AS go-build
 # Build /go/bin/obfs4proxy
 RUN apk --no-cache add --update git \
  && git clone https://gitlab.com/yawning/obfs4.git \
- && ls -la \
  && cd obfs4 \
- && ls -la \
- && `go build -o /usr/bin/obfs4proxy ./obfs4proxy`
+ &&`go build -o /usr/bin/obfs4proxy ./obfs4proxy
 
 FROM alpine:latest 
 
