@@ -57,13 +57,13 @@ if [ -n "$HiddenServicePort" ]; then
   echo "HiddenServicePort $HiddenServicePort" >> /etc/tor/torrc
 fi
 if [ -n "$ExitNodes" ]; then
-  echo " ExitNodes  $ExitNodes" >> /etc/tor/torrc
+  echo "ExitNodes  $ExitNodes" >> /etc/tor/torrc
 fi
 if [ -n "$AccountingStar" ]; then
-  echo " AccountingStar  $AccountingStar" >> /etc/tor/torrc
+  echo "AccountingStar  $AccountingStar" >> /etc/tor/torrc
 fi
 if [ -n "$AccountingMax" ]; then
-  echo " AccountingMax  $AccountingMax" >> /etc/tor/torrc
+  echo "AccountingMax  $AccountingMax" >> /etc/tor/torrc
 fi
 
 #Startup
