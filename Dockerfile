@@ -4,7 +4,7 @@ FROM golang:alpine AS go-build
 RUN apk --no-cache add --update git \
  && git clone https://gitlab.com/yawning/obfs4.git \
  && cd obfs4 \
- &&`go build -o /usr/bin/obfs4proxy ./obfs4proxy
+ && go build -o /usr/bin/obfs4proxy ./obfs4proxy
 
 FROM alpine:latest 
 
