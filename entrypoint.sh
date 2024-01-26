@@ -59,11 +59,14 @@ fi
 if [ -n "$ExitNodes" ]; then
   echo "ExitNodes  $ExitNodes" >> /etc/tor/torrc
 fi
-if [ -n "$AccountingStar" ]; then
-  echo "AccountingStar  $AccountingStar" >> /etc/tor/torrc
+if [ -n "$AccountingStart" ]; then
+  echo "AccountingStart  $AccountingStart" >> /etc/tor/torrc
 fi
 if [ -n "$AccountingMax" ]; then
   echo "AccountingMax  $AccountingMax" >> /etc/tor/torrc
+fi
+if [ -n "$MaxAdvertisedBandwidth" ]; then
+  echo "MaxAdvertisedBandwidth  $MaxAdvertisedBandwidth" >> /etc/tor/torrc
 fi
 
 #Startup
