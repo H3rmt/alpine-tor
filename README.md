@@ -14,7 +14,7 @@ services:
       - ContactInfo=---
       - AccountingStart="week 1 01:00"
       - AccountingMax="2 TBytes"
-      - MaxAdvertisedBandwidth="500 MB"
+      - MaxAdvertisedBandwidth="15 MB"
     volumes:
       - ./data:/var/lib/tor
     network_mode: host
