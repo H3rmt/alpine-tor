@@ -3,10 +3,11 @@ echo "Running h3rmt/alpine-tor"
 echo -e "Alpine Version: \c" && cat /etc/alpine-release
 echo -e "Tor Version: \c" && tor --version
 echo -e "OBFS4Proxy Version: \c" && obfs4proxy -version
-echo "Searching for environment variable 'mode'"
+
 echo "ContactInfo $ContactInfo" >> /etc/tor/torrc
 echo "Nickname $Nickname" >> /etc/tor/torrc
 
+echo "Searching for environment variable 'mode'"
 #Set required values depending on set mode
 if [ "$mode" = "exit" ]
 then
@@ -57,16 +58,16 @@ if [ -n "$HiddenServicePort" ]; then
   echo "HiddenServicePort $HiddenServicePort" >> /etc/tor/torrc
 fi
 if [ -n "$ExitNodes" ]; then
-  echo "ExitNodes  $ExitNodes" >> /etc/tor/torrc
+  echo "ExitNodes $ExitNodes" >> /etc/tor/torrc
 fi
 if [ -n "$AccountingStart" ]; then
-  echo "AccountingStart  $AccountingStart" >> /etc/tor/torrc
+  echo "AccountingStart $AccountingStart" >> /etc/tor/torrc
 fi
 if [ -n "$AccountingMax" ]; then
-  echo "AccountingMax  $AccountingMax" >> /etc/tor/torrc
+  echo "AccountingMax $AccountingMax" >> /etc/tor/torrc
 fi
 if [ -n "$MaxAdvertisedBandwidth" ]; then
-  echo "MaxAdvertisedBandwidth  $MaxAdvertisedBandwidth" >> /etc/tor/torrc
+  echo "MaxAdvertisedBandwidth $MaxAdvertisedBandwidth" >> /etc/tor/torrc
 fi
 
 #Startup
