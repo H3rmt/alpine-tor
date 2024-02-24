@@ -69,6 +69,12 @@ fi
 if [ -n "$MaxAdvertisedBandwidth" ]; then
   echo "MaxAdvertisedBandwidth $MaxAdvertisedBandwidth" >> /etc/tor/torrc
 fi
+if [ -n "$MetricsPort" ]; then
+  echo "MetricsPort $MetricsPort" >> /etc/tor/torrc
+fi
+if [ -n "$MetricsPortPolicy" ]; then
+  echo "MetricsPortPolicy $MetricsPortPolicy" >> /etc/tor/torrc
+fi
 
 #Startup
 echo "Running tor -f /etc/tor/torrc"
