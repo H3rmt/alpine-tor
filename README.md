@@ -74,5 +74,6 @@ services:
 - AccountingStart: Specify how long accounting periods last.
 - MaxAdvertisedBandwidth: If set, we will not advertise more than this amount of bandwidth for our BandwidthRate.
 - RelayBandwidthRate: limit how much relayed traffic you will allow (must be at least 20 kilobytes per second)
+- RelayBandwidthBurst: pool of bytes used to fulfill requests during short periods of traffic above BandwidthRate
 - MetricsPort: If set, open this port to listen for an HTTP GET request to "/metrics".
 - MetricsPortPolicy: Set an entrance policy for the MetricsPort, to limit who can access it.

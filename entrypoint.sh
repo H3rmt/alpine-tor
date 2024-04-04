@@ -69,6 +69,9 @@ fi
 if [ -n "$RelayBandwidthRate" ]; then
   echo "RelayBandwidthRate $RelayBandwidthRate" >> /etc/tor/torrc
 fi
+if [ -n "$RelayBandwidthBurst" ]; then
+  echo "RelayBandwidthBurst $RelayBandwidthBurst" >> /etc/tor/torrc
+fi
 if [ -n "$MetricsPort" ]; then
   echo "MetricsPort $MetricsPort" >> /etc/tor/torrc
 fi
