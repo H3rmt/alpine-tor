@@ -14,7 +14,6 @@ services:
       - ContactInfo=---
       - AccountingStart="week 1 01:00"
       - AccountingMax="2 TBytes"
-      - MaxAdvertisedBandwidth="15 MB"
     volumes:
       - ./data:/var/lib/tor
     network_mode: host
@@ -74,5 +73,6 @@ services:
 - AccountingMax: Limits the max number of bytes sent and received within a set time period using a given calculation rule.
 - AccountingStart: Specify how long accounting periods last.
 - MaxAdvertisedBandwidth: If set, we will not advertise more than this amount of bandwidth for our BandwidthRate.
+- RelayBandwidthRate: limit how much relayed traffic you will allow (must be at least 20 kilobytes per second)
 - MetricsPort: If set, open this port to listen for an HTTP GET request to "/metrics".
 - MetricsPortPolicy: Set an entrance policy for the MetricsPort, to limit who can access it.
