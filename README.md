@@ -77,3 +77,4 @@ services:
 - RelayBandwidthBurst: pool of bytes used to fulfill requests during short periods of traffic above BandwidthRate
 - MetricsPort: If set, open this port to listen for an HTTP GET request to "/metrics".
 - MetricsPortPolicy: Set an entrance policy for the MetricsPort, to limit who can access it.
+- ControlPort: If set, Tor will accept connections on this port and allow those connections to control the Tor process using the Tor Control Protocol
