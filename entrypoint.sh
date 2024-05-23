@@ -78,7 +78,7 @@ fi
 if [ -n "$MetricsPortPolicy" ]; then
   echo "MetricsPortPolicy $MetricsPortPolicy" >> /etc/tor/torrc
 fi
-if [ -n "$ControlPort"]; then
+if [ -n "$ControlPort" ]; then
   echo "ControlPort $ControlPort" >> /etc/tor/torrc
 fi
 
