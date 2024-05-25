@@ -1,4 +1,4 @@
-name: Build
+name: Build with exporter
 on:
   push:
     tags:
@@ -30,10 +30,9 @@ jobs:
         id: meta
         uses: docker/metadata-action@v5
         with:
-          images: |
-            ${{ env.IMAGE_NAME }}
+          images: ${{ env.IMAGE_NAME }}
           flavor:
-            suffix=""
+            suffix="-exporter"
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v3
       - name: Set up Docker Buildx
@@ -49,7 +48,7 @@ jobs:
         uses: docker/build-push-action@v5
         with:
           context: .
-          file: ./Dockerfile
+          file: ./Dockerfile-exporter
           platforms: ${{ matrix.platform }}
           labels: ${{ steps.meta.outputs.labels }}
           outputs: type=image,name-canonical=true,push=true,push-by-digest=true,name=${{ env.IMAGE_NAME }}
@@ -89,6 +88,8 @@ jobs:
         uses: docker/metadata-action@v5
         with:
           images: ${{ env.IMAGE_NAME }}
+          flavor:
+            suffix="-exporter"
       - name: Login to Docker Hub
         uses: docker/login-action@v3
         with:

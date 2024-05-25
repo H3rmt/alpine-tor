@@ -6,14 +6,18 @@ RUN apk --no-cache add --update git \
  && cd obfs4 \
  && go build -o /usr/bin/obfs4proxy ./obfs4proxy
 
-FROM alpine:latest 
+FROM python:alpine 
+ENV EXPORTER_VERSION v0.2.2
+
 RUN apk add tor --update-cache --repository http://dl-4.alpinelinux.org/alpine/edge/community
+RUN wget https://raw.githubusercontent.com/H3rmt/tor-exporter/$EXPORTER_VERSION/prometheus-tor-exporter.py -O /prometheus-tor-exporter.py
+RUN pip install stem prometheus_client retrying
 
 COPY --from=go-build /usr/bin/obfs4proxy /usr/local/bin/obfs4proxy
 
 COPY torrc /etc/tor/torrc
 
-COPY entrypoint.sh /entrypoint.sh
+COPY entrypoint-exporter.sh /entrypoint.sh
 RUN chmod +x /entrypoint.sh
 
 ENTRYPOINT [ "/bin/sh" , "entrypoint.sh" ]
