@@ -30,10 +30,7 @@ jobs:
         id: meta
         uses: docker/metadata-action@v5
         with:
-          images: |
-            ${{ env.IMAGE_NAME }}
-          flavor:
-            suffix=""
+          images: ${{ env.IMAGE_NAME }}
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v3
       - name: Set up Docker Buildx
