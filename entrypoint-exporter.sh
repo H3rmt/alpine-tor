@@ -11,11 +11,11 @@ echo "Searching for environment variable 'mode'"
 # Set required values depending on set mode
 if [ "$mode" = "exit" ]
 then
-   echo "Starting up as exit node"
+   echo "Starting up as exit node (not tested...)"
 
+   echo "ORPort $ORPort" >> /etc/tor/torrc
    echo "ExitRelay 1" >> /etc/tor/torrc
    echo "DirPort $DirPort" >> /etc/tor/torrc
-   # echo "DirPortFrontPage /path/to/html/file" >> /etc/tor/torrc
 elif [ "$mode" = "middle" ]
 then
    echo "Starting up as middle / guard node"
@@ -23,7 +23,7 @@ then
    echo "ORPort $ORPort" >> /etc/tor/torrc
    echo "ExitRelay 0" >> /etc/tor/torrc
    echo "SocksPort 0" >> /etc/tor/torrc
-   echo "ControlSocket 0" >> /etc/tor/torrc
+   echo "DirPort $DirPort" >> /etc/tor/torrc
 elif [ "$mode" = "bridge" ]
 then
   echo "Starting up as bridge node"
