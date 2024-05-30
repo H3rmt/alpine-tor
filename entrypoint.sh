@@ -35,7 +35,6 @@ then
   echo "Starting up as bridge node"
 
   echo "ORPort $ORPort" >> /etc/tor/torrc
-  echo "ExitRelay 0" >> /etc/tor/torrc
   echo "BridgeRelay 1" >> /etc/tor/torrc
   echo "ExtORPort auto" >> /etc/tor/torrc
   echo "ServerTransportListenAddr obfs4 0.0.0.0:$PTPort" >> /etc/tor/torrc
