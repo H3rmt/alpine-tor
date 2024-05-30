@@ -11,9 +11,8 @@ RUN apk add tor --update-cache --repository http://dl-4.alpinelinux.org/alpine/e
 
 COPY --from=go-build /usr/bin/obfs4proxy /usr/local/bin/obfs4proxy
 
-COPY torrc /etc/tor/torrc
-
 COPY entrypoint.sh /entrypoint.sh
-RUN chmod +x /entrypoint.sh
+COPY start.sh /start.sh
+RUN chmod +x /entrypoint.sh /start.sh
 
 ENTRYPOINT [ "/bin/sh" , "entrypoint.sh" ]

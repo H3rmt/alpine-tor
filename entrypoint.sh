@@ -4,6 +4,11 @@ echo -e "Alpine Version: \c" && cat /etc/alpine-release
 echo -e "Tor Version: \c" && tor --version
 echo -e "OBFS4Proxy Version: \c" && obfs4proxy -version
 
+rm -f /etc/tor/torrc
+echo "Log notice stdout" >> /etc/tor/torrc
+echo "Log notice file /var/log/tor/log" >> /etc/tor/torrc
+echo "DataDirectory /var/lib/tor" >> /etc/tor/torrc
+
 echo "ContactInfo $ContactInfo" >> /etc/tor/torrc
 echo "Nickname $Nickname" >> /etc/tor/torrc
 
@@ -82,6 +87,4 @@ if [ -n "$ControlPort" ]; then
   echo "ControlPort $ControlPort" >> /etc/tor/torrc
 fi
 
-# Startup
-echo "Running tor -f /etc/tor/torrc"
-tor -f /etc/tor/torrc
+/start.sh

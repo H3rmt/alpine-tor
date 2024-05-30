@@ -15,9 +15,8 @@ RUN pip install stem prometheus_client retrying
 
 COPY --from=go-build /usr/bin/obfs4proxy /usr/local/bin/obfs4proxy
 
-COPY torrc /etc/tor/torrc
-
-COPY entrypoint-exporter.sh /entrypoint.sh
-RUN chmod +x /entrypoint.sh
+COPY entrypoint.sh /entrypoint.sh
+COPY start-exporter.sh /start.sh
+RUN chmod +x /entrypoint.sh /start.sh
 
 ENTRYPOINT [ "/bin/sh" , "entrypoint.sh" ]
