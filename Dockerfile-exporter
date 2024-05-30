@@ -7,7 +7,7 @@ RUN apk --no-cache add --update git \
  && go build -o /usr/bin/obfs4proxy ./obfs4proxy
 
 FROM python:alpine 
-ENV EXPORTER_VERSION v0.3.0
+ENV EXPORTER_VERSION v0.3.1
 
 RUN apk add tor --update-cache --repository http://dl-4.alpinelinux.org/alpine/edge/community
 RUN wget https://raw.githubusercontent.com/H3rmt/tor-exporter/$EXPORTER_VERSION/prometheus-tor-exporter.py -O /prometheus-tor-exporter.py
