@@ -1,4 +1,4 @@
-FROM golang:alpine AS go-build
+FROM golang:alpine@sha256:68932fa6d4d4059845c8f40ad7e654e626f3ebd3706eef7846f319293ab5cb7a AS go-build
 
 # Build /go/bin/obfs4proxy
 RUN apk --no-cache add --update git \
@@ -6,7 +6,7 @@ RUN apk --no-cache add --update git \
  && cd obfs4 \
  && go build -o /usr/bin/obfs4proxy ./obfs4proxy
 
-FROM python:alpine 
+FROM python:alpine@sha256:b4d299311845147e7e47c970566906caf8378a1f04e5d3de65b5f2e834f8e3bf 
 ENV EXPORTER_VERSION v0.3.3
 
 RUN apk add tor --update-cache --repository http://dl-4.alpinelinux.org/alpine/edge/community
