@@ -1,4 +1,4 @@
-Bridge compose.yml
+## Bridge compose.yml
 ```yaml
 version: "3.4"
 services:
@@ -19,7 +19,7 @@ services:
     network_mode: host
 ```
 
-Middle compose.yml
+## Middle compose.yml
 ```yaml
 version: "3.4"
 services:
@@ -39,7 +39,9 @@ services:
     network_mode: host
 ```
 
-Middle+exporter compose.yml
+
+## Middle+exporter compose.yml
+### Exporter from https://github.com/H3rmt/tor-exporter, metrics in README `Exported metrics` 
 ```yaml
 version: "3.4"
 services:
@@ -60,7 +62,7 @@ services:
     network_mode: host
 ```
 
-Exit compose.yml
+## Exit compose.yml
 ```yaml
 version: "3.4"
 services:
