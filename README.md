@@ -1,6 +1,5 @@
 ## Bridge compose.yml
 ```yaml
-version: "3.4"
 services:
   bridge:
     image: h3rmt/alpine-tor:latest
@@ -21,7 +20,6 @@ services:
 
 ## Middle compose.yml
 ```yaml
-version: "3.4"
 services:
   middle:
     image: h3rmt/alpine-tor:latest
@@ -43,7 +41,6 @@ services:
 ## Middle+exporter compose.yml
 ### Exporter from https://github.com/H3rmt/tor-exporter, metrics in README `Exported metrics` 
 ```yaml
-version: "3.4"
 services:
   middle:
     image: h3rmt/alpine-tor:latest
@@ -64,7 +61,6 @@ services:
 
 ## Exit compose.yml
 ```yaml
-version: "3.4"
 services:
   exit:
     image: h3rmt/alpine-tor:latest
