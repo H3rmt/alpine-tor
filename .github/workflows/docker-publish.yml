@@ -6,7 +6,7 @@ on:
       - v*
 
 env:
-  REGISTRY_IMAGE: ghcr.io/h3rmt/puppeteer-sma
+  REGISTRY_IMAGE: ghcr.io/h3rmt/alpine-tor
 
 permissions:
   contents: read
@@ -23,6 +23,7 @@ jobs:
       matrix:
         platform:
           - linux/amd64
+          - linux/arm/v7
           - linux/arm64
     steps:
       - name: Prepare
