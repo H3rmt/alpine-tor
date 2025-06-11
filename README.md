@@ -1,8 +1,9 @@
-## Bridge compose.yml
+## Bridge+exporter  compose.yml
+### Exporter from https://github.com/H3rmt/tor-exporter, metrics in README `Exported metrics` on 9099
 ```yaml
 services:
   bridge:
-    image: h3rmt/alpine-tor:latest
+    image: h3rmt/alpine-tor-exporter:latest
     restart: unless-stopped
     container_name: bridge
     user: "0:0"
@@ -13,6 +14,8 @@ services:
       - ContactInfo=---
       - AccountingStart="week 1 01:00"
       - AccountingMax="2 TBytes"
+      - ControlPort=9030
+      - MetricsPort=9090
     volumes:
       - ./data:/var/lib/tor
     network_mode: host
@@ -43,7 +46,7 @@ services:
 ```yaml
 services:
   middle:
-    image: h3rmt/alpine-tor:latest
+    image: h3rmt/alpine-tor-exporter:latest
     restart: unless-stopped
     container_name: middle
     user: "0:0"
@@ -54,30 +57,12 @@ services:
       - AccountingStart="week 1 01:00"
       - AccountingMax="2 TBytes"
       - ControlPort=9030
+      - MetricsPort=9090
     volumes:
       - ./data:/var/lib/tor
     network_mode: host
 ```
 
-## Exit compose.yml
-```yaml
-services:
-  exit:
-    image: h3rmt/alpine-tor:latest
-    restart: unless-stopped
-    container_name: exit
-    user: "0:0"
-    environment:
-      - mode=exit
-      - ORPort=9001
-      - DirPort=---
-      - ContactInfo=---
-      - AccountingStart="week 1 01:00"
-      - AccountingMax="2 TBytes"
-    volumes:
-      - ./data:/var/lib/tor
-    network_mode: host
-```
 ## Support (https://man.archlinux.org/man/tor.1#SERVER_OPTIONS):
 - ContactInfo: Administrative contact information for this relay or bridge.
 - Nickname: Nicknames must be between 1 and 19 characters inclusive, and must contain only the characters [a-zA-Z0-9].
