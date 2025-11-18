@@ -1,5 +1,12 @@
-## Bridge+exporter  compose.yml
-### Exporter from https://github.com/H3rmt/tor-exporter, metrics in README `Exported metrics` on 9099
+# Apline Tor
+
+Configure and run Tor relay (bridge, middle, exit or proxy) with Docker on Alpine Linux base image.
+
+The `ghcr.io/h3rmt/alpine-tor-exporter` image includes a [Prometheus exporter](https://github.com/H3rmt/tor-exporter) for Tor metrics.
+
+
+## Bridge+exporter compose.yml
+Exports metrics on 9099
 ```yaml
 services:
   bridge:
@@ -42,7 +49,7 @@ services:
 
 
 ## Middle+exporter compose.yml
-### Exporter from https://github.com/H3rmt/tor-exporter, metrics in README `Exported metrics` 
+Exports metrics on 9099 
 ```yaml
 services:
   middle:
@@ -63,12 +70,15 @@ services:
     network_mode: host
 ```
 
-## Support (https://man.archlinux.org/man/tor.1#SERVER_OPTIONS):
+Exit and Proxy modes are not tested yet and might be missing usefull Options, look at [entrypoint](./entrypoint.sh) for available options.
+
+## ENV Support (https://man.archlinux.org/man/tor.1#SERVER_OPTIONS):
+- mode: Set to "bridge", "middle" or "exit" to configure the relay type.
 - ContactInfo: Administrative contact information for this relay or bridge.
 - Nickname: Nicknames must be between 1 and 19 characters inclusive, and must contain only the characters [a-zA-Z0-9].
 - ORPort: Advertise this port to listen for connections from Tor clients and servers.
-- PTPort: obfs4 Port
-- SOCKSPort: Open this port to listen for connections from SOCKS-speaking applications.
+- PTPort[only Bridge]: obfs4 Port
+- SOCKSPort[only Proxy]: Open this port to listen for connections from SOCKS-speaking applications.
 - DNSPort: Open this port to listen for UDP DNS requests, and resolve them anonymously.
 - MyFamily: Declare that this Tor relay is controlled or administered by a group or organization identical or similar to that of the other relays, defined by their (possibly $-prefixed) identity fingerprints.
 - HiddenServiceDir: Store data files for a hidden service in DIRECTORY.
