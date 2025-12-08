@@ -6,7 +6,7 @@ RUN apk --no-cache add --update git \
  && cd obfs4 \
  && go build -o /usr/bin/obfs4proxy ./obfs4proxy
 
-FROM alpine:latest@sha256:4b7ce07002c69e8f3d704a9c5d6fd3053be500b7f1c69fc0d80990c2ad8dd412 
+FROM alpine:latest@sha256:51183f2cfa6320055da30872f211093f9ff1d3cf06f39a0bdb212314c5dc7375 
 RUN apk add tor --update-cache --repository http://dl-4.alpinelinux.org/alpine/edge/community
 
 COPY --from=go-build /usr/bin/obfs4proxy /usr/local/bin/obfs4proxy
