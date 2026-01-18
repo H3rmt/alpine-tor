@@ -10,7 +10,7 @@ Exports metrics on 9099
 ```yaml
 services:
   bridge:
-    image: h3rmt/alpine-tor-exporter:latest
+    image: ghcr.io/h3rmt/alpine-tor-exporter:latest
     restart: unless-stopped
     container_name: bridge
     user: "0:0"
@@ -32,7 +32,7 @@ services:
 ```yaml
 services:
   middle:
-    image: h3rmt/alpine-tor:latest
+    image: ghcr.io/h3rmt/alpine-tor:latest
     restart: unless-stopped
     container_name: middle
     user: "0:0"
@@ -53,7 +53,7 @@ Exports metrics on 9099
 ```yaml
 services:
   middle:
-    image: h3rmt/alpine-tor-exporter:latest
+    image: ghcr.io/h3rmt/alpine-tor-exporter:latest
     restart: unless-stopped
     container_name: middle
     user: "0:0"
