@@ -6,7 +6,7 @@ RUN apk --no-cache add --update git \
  && cd obfs4 \
  && go build -o /usr/bin/obfs4proxy ./obfs4proxy
 
-FROM python:alpine@sha256:8373231e1e906ddfb457748bfc032c4c06ada8c759b7b62d9c73ec2a3c56e710 
+FROM python:alpine@sha256:faee120f7885a06fcc9677922331391fa690d911c020abb9e8025ff3d908e510 
 ENV EXPORTER_VERSION v0.3.3
 
 RUN apk add tor --update-cache --repository http://dl-4.alpinelinux.org/alpine/edge/community
