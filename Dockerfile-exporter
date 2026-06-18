@@ -1,4 +1,4 @@
-FROM golang:alpine@sha256:d3f0cf7723f3429e3f9ed846243970b20a2de7bae6a5b66fc5914e228d831bbb AS go-build
+FROM golang:alpine@sha256:3ad57304ad93bbec8548a0437ad9e06a455660655d9af011d58b993f6f615648 AS go-build
 
 # Build /go/bin/obfs4proxy
 RUN apk --no-cache add --update git \
