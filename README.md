@@ -1,94 +1,144 @@
-# Apline Tor
+# Alpine Tor
 
-Configure and run Tor relay (bridge, middle, exit or proxy) with Docker on Alpine Linux base image.
+Run a Tor relay, bridge, or proxy in a small Alpine Linux container.
 
-The `ghcr.io/h3rmt/alpine-tor-exporter` image includes a [Prometheus exporter](https://github.com/H3rmt/tor-exporter) for Tor metrics.
+The project publishes two images:
 
+| Image                               | Purpose                          |
+| ----------------------------------- | -------------------------------- |
+| `ghcr.io/h3rmt/alpine-tor`          | Tor only                         |
+| `ghcr.io/h3rmt/alpine-tor-exporter` | Tor plus the Prometheus exporter |
 
-## Bridge+exporter compose.yml
-Exports metrics on 9099
-```yaml
-services:
-  bridge:
-    image: ghcr.io/h3rmt/alpine-tor-exporter:latest
-    restart: unless-stopped
-    container_name: bridge
-    user: "0:0"
-    environment:
-      - mode=bridge
-      - ORPort=9001
-      - PTPort=8000
-      - ContactInfo=---
-      - AccountingStart="week 1 01:00"
-      - AccountingMax="2 TBytes"
-      - ControlPort=9030
-      - MetricsPort=9090
-    volumes:
-      - ./data:/var/lib/tor
-    network_mode: host
-```
+Both images:
 
-## Middle compose.yml
+- use Tini as PID 1
+- generate a Tor configuration from environment variables by default
+- run Tor as an unprovileged `tor` user.
+
+## Quick start
+
+Change the host-side ports and relay settings to suit your deployment. Relay ports must be published and reachable from the public internet.
+
+### Tor relay
+
 ```yaml
 services:
   middle:
     image: ghcr.io/h3rmt/alpine-tor:latest
     restart: unless-stopped
-    container_name: middle
-    user: "0:0"
     environment:
-      - mode=middle
-      - ORPort=9001
-      - ContactInfo=---
-      - AccountingStart="week 1 01:00"
-      - AccountingMax="2 TBytes"
+      mode: middle
+      ORPort: 9001
+      ContactInfo: "email@domain"
+      AccountingStart: "week 1 01:00"
+      AccountingMax: "2 TBytes"
     volumes:
       - ./data:/var/lib/tor
-    network_mode: host
+    ports:
+      - "9001:9001/tcp"
 ```
 
+### Bridge with Prometheus exporter
 
-## Middle+exporter compose.yml
-Exports metrics on 9099 
+The exporter image uses `ControlPort` to communicate with Tor and `PrometheusExporterPort` for the Prometheus HTTP endpoint. Tor's optional native metrics listener uses the separate `MetricsPort` and `MetricsPortPolicy` setting.
+
 ```yaml
 services:
-  middle:
+  bridge:
     image: ghcr.io/h3rmt/alpine-tor-exporter:latest
     restart: unless-stopped
-    container_name: middle
-    user: "0:0"
     environment:
-      - mode=middle
-      - ORPort=9001
-      - ContactInfo=---
-      - AccountingStart="week 1 01:00"
-      - AccountingMax="2 TBytes"
-      - ControlPort=9030
-      - MetricsPort=9090
+      mode: bridge
+      ORPort: 9001
+      PTPort: 8000
+      ContactInfo: "your-contact-information"
+      AccountingStart: "week 1 01:00"
+      AccountingMax: "2 TBytes"
+      # ControlPort: 9030 # (default)
+      # PrometheusExporterPort: 9090 # (default)
+      MetricsPort: 9091
+      MetricsPortPolicy: accept *
     volumes:
       - ./data:/var/lib/tor
-    network_mode: host
+    ports:
+      - "9001:9001/tcp"
+      - "8000:8000/tcp"
+      - "127.0.0.1:9090:9090/tcp"
+      - "127.0.0.1:9091:9091/tcp"
 ```
 
-Exit and Proxy modes are not tested yet and might be missing usefull Options, look at [entrypoint](./entrypoint.sh) for available options.
+The exporter image can also be used with `mode: middle` or another supported mode. The exporter must have both `ControlPort` and `PrometheusExporterPort` set. The `ControlPort` is used internally by the exporter and does not need to be published to the host.
 
-## ENV Support (https://man.archlinux.org/man/tor.1#SERVER_OPTIONS):
-- mode: Set to "bridge", "middle" or "exit" to configure the relay type.
-- ContactInfo: Administrative contact information for this relay or bridge.
-- Nickname: Nicknames must be between 1 and 19 characters inclusive, and must contain only the characters [a-zA-Z0-9].
-- ORPort: Advertise this port to listen for connections from Tor clients and servers.
-- PTPort[only Bridge]: obfs4 Port
-- SOCKSPort[only Proxy]: Open this port to listen for connections from SOCKS-speaking applications.
-- DNSPort: Open this port to listen for UDP DNS requests, and resolve them anonymously.
-- MyFamily: Declare that this Tor relay is controlled or administered by a group or organization identical or similar to that of the other relays, defined by their (possibly $-prefixed) identity fingerprints.
-- HiddenServiceDir: Store data files for a hidden service in DIRECTORY.
-- HiddenServicePort: Configure a virtual port VIRTPORT for a hidden service.
-- ExitNodes: A list of identity fingerprints, country codes, and address patterns of nodes to use as exit node
-- AccountingMax: Limits the max number of bytes sent and received within a set time period using a given calculation rule.
-- AccountingStart: Specify how long accounting periods last.
-- MaxAdvertisedBandwidth: If set, we will not advertise more than this amount of bandwidth for our BandwidthRate.
-- RelayBandwidthRate: limit how much relayed traffic you will allow (must be at least 20 kilobytes per second)
-- RelayBandwidthBurst: pool of bytes used to fulfill requests during short periods of traffic above BandwidthRate
-- MetricsPort: If set, open this port to listen for an HTTP GET request to "/metrics".
-- MetricsPortPolicy: Set an entrance policy for the MetricsPort, to limit who can access it.
-- ControlPort: If set, Tor will accept connections on this port and allow those connections to control the Tor process using the Tor Control Protocol
+## Configuration
+
+### Generated `torrc`
+
+If `/etc/tor/torrc` does not exist when the container starts, the entrypoint
+creates it using the environment variables listed below. The generated file
+is recreated on each start.
+
+### Custom `torrc`
+
+To provide a complete custom configuration, mount a file at `/etc/tor/torrc`:
+
+```yaml
+services:
+  tor:
+    image: ghcr.io/h3rmt/alpine-tor:latest
+    environment:
+      mode: middle # ignored when a custom torrc is mounted
+    volumes:
+      - ./torrc:/etc/tor/torrc:ro
+      - ./data:/var/lib/tor
+    # Publish the ORPort, DirPort, SOCKSPort, or other listener ports declared
+    # by the mounted torrc as needed.
+```
+
+The entrypoint detects the existing file and leaves it unchanged. The file must be readable by the container's `tor` user, for example with mode `0644`.
+Publish any listener ports declared by the custom file with Compose `ports:` entries; the example above intentionally does not publish any ports.
+
+When a custom file is used, the generated-configuration environment variables are ignored. For the exporter image, the custom file must still configure a working Tor `ControlPort`. If Tor's native `MetricsPort` is enabled as well, it must use a different port from `PrometheusExporterPort`.
+
+## Supported modes
+
+| Mode     | Generated configuration                   | Status    |
+| -------- | ----------------------------------------- | --------- |
+| `middle` | ORPort and non-exit relay                 | Supported |
+| `bridge` | ORPort, bridge relay, and obfs4 transport | Supported |
+| `exit`   | ORPort, exit relay, and DirPort           | Untested  |
+| `proxy`  | SOCKSPort                                 | Untested  |
+
+## Environment variables
+
+### Relay and mode settings
+
+| Variable      | Description                                                                       |
+| ------------- | --------------------------------------------------------------------------------- |
+| `mode`        | `middle`, `bridge`, `exit`, or `proxy`. Required when generating a configuration. |
+| `ContactInfo` | Administrative contact information for the relay or bridge.                       |
+| `Nickname`    | Tor nickname; 1–19 alphanumeric characters.                                       |
+| `ORPort`      | Port advertised for Tor relay connections.                                        |
+| `PTPort`      | obfs4 transport port; used by `bridge` mode.                                      |
+| `SOCKSPort`   | SOCKS port; used by `proxy` mode.                                                 |
+| `DirPort`     | Directory port; used by `exit` and `middle` modes.                                |
+
+### Optional Tor settings
+
+| Variable                 | Description                                                                      |
+| ------------------------ | -------------------------------------------------------------------------------- |
+| `DNSPort`                | UDP port for anonymous DNS resolution.                                           |
+| `MyFamily`               | Fingerprints of relays operated by the same group.                               |
+| `HiddenServiceDir`       | Directory for a hidden service.                                                  |
+| `HiddenServicePort`      | Virtual-to-real port mapping for a hidden service.                               |
+| `ExitNodes`              | Nodes, fingerprints, countries, or address patterns for exits.                   |
+| `AccountingMax`          | Maximum traffic allowed in an accounting period.                                 |
+| `AccountingStart`        | Length and start of accounting periods.                                          |
+| `MaxAdvertisedBandwidth` | Upper limit for advertised relay bandwidth.                                      |
+| `RelayBandwidthRate`     | Relay bandwidth rate.                                                            |
+| `RelayBandwidthBurst`    | Short-term relay bandwidth burst limit.                                          |
+| `MetricsPort`            | Optional native Tor metrics port. Do not share it with `PrometheusExporterPort`. |
+| `MetricsPortPolicy`      | Access policy for the standard image's native metrics port.                      |
+| `ControlPort`            | Tor control port; required by the exporter image.                                |
+| `PrometheusExporterPort` | Prometheus exporter HTTP port; required by the exporter image.                   |
+
+These settings correspond to Tor's server options. See the [Tor manual](https://man.archlinux.org/man/tor.1#SERVER_OPTIONS) for complete reference.
