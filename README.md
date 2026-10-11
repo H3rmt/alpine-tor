@@ -12,8 +12,9 @@ The project publishes two images:
 Both images:
 
 - use Tini as PID 1
+- log the installed Alpine, Tor, and Lyrebird versions at startup
 - generate a Tor configuration from environment variables by default
-- run Tor as an unprovileged `tor` user.
+- run Tor as an unprivileged `tor` user.
 
 ## Quick start
 
@@ -104,7 +105,7 @@ When a custom file is used, the generated-configuration environment variables ar
 | Mode     | Generated configuration                   | Status    |
 | -------- | ----------------------------------------- | --------- |
 | `middle` | ORPort and non-exit relay                 | Supported |
-| `bridge` | ORPort, bridge relay, and obfs4 transport | Supported |
+| `bridge` | ORPort, bridge relay, and Lyrebird obfs4 transport | Supported |
 | `exit`   | ORPort, exit relay, and DirPort           | Untested  |
 | `proxy`  | SOCKSPort                                 | Untested  |
 
@@ -118,7 +119,7 @@ When a custom file is used, the generated-configuration environment variables ar
 | `ContactInfo` | Administrative contact information for the relay or bridge.                       |
 | `Nickname`    | Tor nickname; 1–19 alphanumeric characters.                                       |
 | `ORPort`      | Port advertised for Tor relay connections.                                        |
-| `PTPort`      | obfs4 transport port; used by `bridge` mode.                                      |
+| `PTPort`      | Lyrebird obfs4 transport port; used by `bridge` mode.                              |
 | `SOCKSPort`   | SOCKS port; used by `proxy` mode.                                                 |
 | `DirPort`     | Directory port; used by `exit` and `middle` modes.                                |
 

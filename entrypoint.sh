@@ -8,8 +8,8 @@ printf 'Alpine version: %s\n' "$(cat /etc/alpine-release)"
 # Tor version is visible in container logs (including for the exporter image).
 tor_version=$(tor --version | awk 'NR == 1 { print $3 }' | sed 's/[.]$//')
 printf 'Tor version: %s\n' "$tor_version"
-printf 'OBFS4Proxy version: '
-obfs4proxy -version
+printf 'Lyrebird version: '
+lyrebird -version
 
 generate_tor_config() {
   rm -f /etc/tor/torrc
@@ -46,7 +46,7 @@ generate_tor_config() {
     echo "BridgeRelay 1" >> /etc/tor/torrc
     echo "ExtORPort auto" >> /etc/tor/torrc
     echo "ServerTransportListenAddr obfs4 0.0.0.0:$PTPort" >> /etc/tor/torrc
-    echo "ServerTransportPlugin obfs4 exec /usr/local/bin/obfs4proxy -enableLogging" >> /etc/tor/torrc
+    echo "ServerTransportPlugin obfs4 exec /usr/bin/lyrebird" >> /etc/tor/torrc
   elif [ "$mode" = "proxy" ]
   then
     echo "Starting up as proxy"
