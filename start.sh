@@ -1,5 +1,5 @@
 #!/bin/sh
 set -e
 
-echo "Running tor -f /etc/tor/torrc"
-exec tor -f /etc/tor/torrc
+echo "Running tor -f $TOR_CONFIG"
+exec tor -f "$TOR_CONFIG"

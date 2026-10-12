@@ -1,8 +1,8 @@
 #!/bin/sh
 set -e
 
-echo "Running tor -f /etc/tor/torrc"
-tor -f /etc/tor/torrc &
+echo "Running tor -f $TOR_CONFIG"
+tor -f "$TOR_CONFIG" &
 tor_pid=$!
 
 cleanup() {

@@ -16,7 +16,7 @@ Both images:
 - generate a Tor configuration from environment variables by default
 - run Tor as an unprivileged user (the image's `tor` user by default).
 
-When using Podman with `--user UID:GID`, make sure the mounted data directory is owned by that UID:GID. The entrypoint keeps the supplied user instead of switching to the image's `tor` user, and does not change ownership of mounted files.
+When using Podman with `--user UID:GID`, make sure the mounted data directory is owned by that UID:GID on the host. The entrypoint keeps the supplied user instead of switching to the image's `tor` user, restricts mounted-file permissions to the owner, and does not attempt a non-root `chown`. When started as root, Docker mode changes the mounted directories to `tor:tor`, restricts their permissions to the owner, and then switches to the image's `tor` user.
 
 ## Quick start
 
