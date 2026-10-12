@@ -14,7 +14,9 @@ Both images:
 - use Tini as PID 1
 - log the installed Alpine, Tor, and Lyrebird versions at startup
 - generate a Tor configuration from environment variables by default
-- run Tor as an unprivileged `tor` user.
+- run Tor as an unprivileged user (the image's `tor` user by default).
+
+When using Podman with `--user UID:GID`, make sure the mounted data directory is owned by that UID:GID. The entrypoint keeps the supplied user instead of switching to the image's `tor` user, and does not change ownership of mounted files.
 
 ## Quick start
 

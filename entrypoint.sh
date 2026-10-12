@@ -104,8 +104,14 @@ else
   generate_tor_config
 fi
 
-# Bind-mounted data directories are commonly owned by root on the host. Make
-# them writable by Tor before dropping privileges.
-chown -R tor:tor /var/lib/tor /var/log/tor
+# When the container is started as a non-root user (for example with Podman
+# and --user UID:GID), that user already owns the bind-mounted directories.
+# Keep that identity instead of attempting to switch to the image's tor user.
+if [ "$(id -u)" -eq 0 ]; then
+  # Do not change ownership of bind mounts; only ensure that their owner has
+  # the permissions needed by Tor.
+  chown -R tor:tor /var/lib/tor /var/log/tor
+  exec setpriv --reuid=tor --regid=tor --init-groups "$@"
+fi
 
-exec setpriv --reuid=tor --regid=tor --init-groups "$@"
+exec "$@"
